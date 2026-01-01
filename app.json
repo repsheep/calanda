@@ -2,7 +2,7 @@
   "expo": {
     "name": "Calanda",
     "slug": "Calanda",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,11 +16,13 @@
       "supportsTablet": true
     },
     "android": {
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.repsheep.Calanda"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -28,6 +30,11 @@
     "plugins": [
       "expo-sqlite",
       "@react-native-community/datetimepicker"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5efbb97d-c2d3-4fbf-92a1-9ed6bd2bab8b"
+      }
+    }
   }
 }

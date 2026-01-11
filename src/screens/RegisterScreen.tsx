@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Alert, Platform, KeyboardAvoidingView } from 'react-native';
 import { TextInput, Button, Card } from 'react-native-paper';
+import { useRoute, RouteProp, useNavigation, NavigationProp } from '@react-navigation/native';
 import { RaceCourses, RaceNumbers, Surfaces, Distances, RaceClasses, BetTypes, FieldSizes, getEnumList, NO_SELECTION_ID } from '../constants/MasterDataEnum';
-import { addRecord } from '../db/database';
+import { addRecord, BettingRecord } from '../db/database';
 import FormDropdown from '../components/FormDropdown';
 import FormDatePicker from '../components/FormDatePicker';
 
+type RegisterRouteParams = {
+  initialData?: BettingRecord;
+};
+
 export default function RegisterScreen() {
+  const route = useRoute<RouteProp<{ params: RegisterRouteParams }, 'params'>>();
+  const navigation = useNavigation<NavigationProp<any>>();
+
   // ローカルタイムで YYYY-MM-DD を取得する関数
   const getLocalDateString = (d: Date) => {
     const year = d.getFullYear();
@@ -26,6 +34,26 @@ export default function RegisterScreen() {
   const [stake, setStake] = useState('');
   const [payout, setPayout] = useState('');
   const [memo, setMemo] = useState('');
+
+  useEffect(() => {
+    if (route.params?.initialData) {
+      const data = route.params.initialData;
+      setDate(data.date);
+      setRaceCourse(data.race_course);
+      setRaceNumber(data.race_number);
+      setSurface(data.surface);
+      setDistance(data.distance);
+      setFieldSize(data.field_size);
+      setRaceClass(data.class);
+      setBetType(data.bet_type);
+      setStake(data.stake.toString());
+      setPayout(data.payout.toString());
+      setMemo(data.memo);
+
+      // パラメータをリセットして、再度の反映を防ぐ
+      navigation.setParams({ initialData: undefined });
+    }
+  }, [route.params]);
 
   const handleSave = async () => {
     // 必須項目チェック

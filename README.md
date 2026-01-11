@@ -1,0 +1,1 @@
+リリース用ビルド（月あたりの制限あるので注意）：npx eas-cli build --platform android --profile preview

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Platform, Alert } from 'react-native';
 import { Button, Text, Card, DataTable, IconButton } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import { RaceCourses, BetTypes, getEnumList } from '../constants/MasterDataEnum';
 import FormDropdown from '../components/FormDropdown';
 import FormDatePicker from '../components/FormDatePicker';
@@ -9,6 +10,8 @@ import { searchRecords, deleteRecord, BettingRecord } from '../db/database';
 const ALL_ID = -1;
 
 export default function SearchScreen() {
+  const navigation = useNavigation();
+
   // 日付フォーマット関数 (YYYY-MM-DD, ローカル時間)
   const formatDate = (date: Date) => {
     const year = date.getFullYear();
@@ -47,6 +50,11 @@ export default function SearchScreen() {
     };
     const result = await searchRecords(criteria);
     setRecords(result);
+  };
+
+  const handleQuote = (record: BettingRecord) => {
+    // @ts-ignore
+    navigation.navigate('登録', { initialData: record });
   };
 
   const handleDelete = (id: number) => {
@@ -156,6 +164,7 @@ export default function SearchScreen() {
               <DataTable.Title numeric style={{ width: 80 }}>払戻</DataTable.Title>
               <DataTable.Title numeric style={{ width: 80 }}>収支</DataTable.Title>
               <DataTable.Title style={{ width: 50 }}>{null}</DataTable.Title>
+              <DataTable.Title style={{ width: 100 }}>{null}</DataTable.Title>
             </DataTable.Header>
 
             <ScrollView style={{ maxHeight: 400 }}>
@@ -176,11 +185,22 @@ export default function SearchScreen() {
                       </Text>
                     </DataTable.Cell>
                     <DataTable.Cell style={{ width: 50 }}>
-                      <IconButton
-                        icon="delete"
-                        size={20}
-                        onPress={() => item.id && handleDelete(item.id)}
-                      />
+                      <View style={{ flexDirection: 'row' }}>
+                        <IconButton
+                          icon="content-copy"
+                          size={20}
+                          onPress={() => handleQuote(item)}
+                        />
+                      </View>
+                    </DataTable.Cell>
+                    <DataTable.Cell style={{ width: 100 }}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <IconButton
+                          icon="delete"
+                          size={20}
+                          onPress={() => item.id && handleDelete(item.id)}
+                        />
+                      </View>
                     </DataTable.Cell>
                   </DataTable.Row>
                 );

@@ -42,8 +42,8 @@ export default function RegisterScreen() {
     }
 
     const payoutNum = Number(payout);
-    if (isNaN(payoutNum) || payoutNum < 0 || payoutNum % 100 !== 0) {
-      Alert.alert('エラー', '払戻金額は100円単位で入力してください');
+    if (isNaN(payoutNum) || payoutNum < 0 || !Number.isInteger(payoutNum)) {
+      Alert.alert('エラー', '払戻金額は0以上の整数で入力してください');
       return;
     }
 

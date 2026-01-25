@@ -168,7 +168,7 @@ export default function SearchScreen() {
             </DataTable.Header>
 
             <ScrollView style={{ maxHeight: 400 }}>
-              {records.map((item) => {
+              {records.slice(0, 30).map((item) => {
                 const itemProfit = item.payout - item.stake;
                 const itemProfitColor = itemProfit > 0 ? 'blue' : itemProfit < 0 ? 'red' : 'black';
                 return (
